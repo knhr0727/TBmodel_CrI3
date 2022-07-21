@@ -3,7 +3,9 @@ Tight binding model for CrI3 (monolayer, bilayer, twisted bilayer) written in Py
 
 How to use:
 1. Create the npz files (numpy savez) of the Hamiltonian parameters of monolayers 
- (spin up and down, VLR and VRL types)
+ (spin up and down, VLR and VRL types)  
+ For each `TBband.*.py` file, bands of single spin sepecies without spin-orbit coupling
+ corresponds to each file will be shown. Just close the figure to proceed.  
 
 ```
 cd mono_singlespin_VRL
