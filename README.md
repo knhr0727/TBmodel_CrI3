@@ -18,7 +18,6 @@ cd ..
 
 2. Run each code  
   2.1 A quick example
-
 Move to the monolayer directory `cd monolayer`.  
 Generate a MOKE data `python monolayer_MOKE.py` (this can take a few seconds).  
 The data file 'DATA.mono.npz' will be generated.  
