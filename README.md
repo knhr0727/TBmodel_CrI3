@@ -16,7 +16,7 @@ python TBband.1.py
 cd ..
 ```
 
-2. Run each code 
+2. Run each code  
   2.1 A quick example
 
 Move to the monolayer directory `cd monolayer`.  
