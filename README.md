@@ -16,13 +16,10 @@ python TBband.1.py
 cd ..
 ```
 
-2. Run each codes 
-1) a quick example
+2. Run each code 
+    1) A quick example
 
-move to the monolayer directory `cd monolayer`.
-generate a MOKE data `python monolayer_MOKE.py` (this can take a few seconds).
-the data file 'DATA.mono.npz' will be generated.
-run a plotting code `python plot_monolayer.py DATA.mono.npz`. 
-```
-
-
+Move to the monolayer directory `cd monolayer`.  
+Generate a MOKE data `python monolayer_MOKE.py` (this can take a few seconds).  
+The data file 'DATA.mono.npz' will be generated.  
+Run a plotting code `python plot_monolayer.py DATA.mono.npz`.  
