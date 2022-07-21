@@ -1,0 +1,372 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+Bohr = 0.52917721092 #Angstrom
+Hartree = 27.2113860217 #eV
+
+def Rsocp(theta):
+    R = np.array([[ np.cos(theta),-np.sin(theta), 0.],\
+                  [ np.sin(theta), np.cos(theta), 0.],\
+                  [ 0.           , 0.           , 1.]])
+    return R
+
+def Rsocd(theta):
+    R1 = np.array([[ np.cos(2*theta),-np.sin(2*theta)],\
+                   [ np.sin(2*theta), np.cos(2*theta)]])
+    R2 = np.array([[ np.cos(theta),-np.sin(theta)],\
+                   [ np.sin(theta), np.cos(theta)]])
+    R = np.zeros((5,5),dtype=float)
+    R[0,0] = 1.
+    R[1:3,1:3] = R1
+    R[3:5,3:5] = R2
+    return R
+
+def kpath(k1,k2,n):
+    path = []
+    for x in np.linspace(0.,1.,n):
+        path.append(k1*(1.-x)+k2*x)
+    return path
+
+def PlotBand(Band_list, kticks_label=None, yrange=None, shift=False,
+             eV=False, EF=None, highlight=None, save=False,
+             fname=None, c1='b', c2='r', figsize=None):
+    #if (save):
+    #    #del(sys.modules['matplotlib'])
+    #    import matplotlib
+    #    matplotlib.use('Agg')
+    #import matplotlib.pyplot as plt
+    try:
+        len(Band_list[0][0])
+    except:
+        Band_list = [Band_list]
+    fig = plt.figure(figsize=figsize)
+    ax = plt.subplot()
+    kticks = []
+    kstart = 0.
+    i1,i2 = 1,-1
+    if (highlight != None):
+        i1,i2 = highlight[0],highlight[1]
+    e0 = 0.0
+    if ((EF!=None)and(shift==True)):
+        e0 = EF
+    for Bands in Band_list:
+        klist = Bands[0]+kstart
+        kticks.append(klist[0])
+        for i in range(len(Bands)-1):
+            E = Bands[i+1].copy() - e0
+            if (eV == True): E *= Hartree
+            col = c1
+            if ((i1<=i)and(i<=i2)): col = c2
+            plt.plot(klist,E,color=col)
+        kstart = klist[-1]
+    kticks.append(kstart)
+    ax.set_xticks(kticks, minor=False)
+    ax.xaxis.grid(True, which='major')
+    if (kticks_label != None):
+        ax.set_xticklabels(kticks_label)
+    if (EF != None):
+        if (eV == True):
+            EF *= Hartree
+            e0 *= Hartree
+        plt.plot([0.,kstart],[EF-e0,EF-e0],lw=0.25,color='gray',ls='--')
+    plt.xlim(0,kstart)
+    if (yrange != None):
+        plt.ylim([yrange[0],yrange[1]])
+    if(save):
+        if(fname != None):
+            plt.savefig(fname)
+        else:
+            plt.savefig('./pymx_band.png')
+    else: plt.show()
+
+
+#Atoms.UnitVectors.Unit             Ang
+#<Atoms.UnitVectors
+a = np.array([    6.9852500000,       0.0000000000,       0.0000000000])/Bohr
+b = np.array([    3.4926250000,       6.0494039518,       0.0000000000])/Bohr
+c = np.array([    0.0000000000,       0.0000000000,      24.0000000000])/Bohr
+#Atoms.UnitVectors>
+#Atoms.Number                       8
+#Atoms.SpeciesAndCoordinates.Unit   frac
+#<Atoms.SpeciesAndCoordinates
+Cr1 =  0.6666666667*a +   0.6666666667*b +   0.500000000*c   
+Cr2 =  0.3333333333*a +   0.3333333333*b +   0.500000000*c   
+I3  =  0.3572400000*a +   0.6427600000*b +   0.565970000*c   
+I4  =  0.0000000000*a +   0.3572400000*b +   0.565970000*c   
+I5  =  0.6427600000*a +   0.0000000000*b +   0.565970000*c   
+I6  =  0.0000000000*a +   0.6427600000*b +   0.434030000*c   
+I7  =  0.3572400000*a +   0.0000000000*b +   0.434030000*c   
+I8  =  0.6427600000*a +   0.3572400000*b +   0.434030000*c   
+#Atoms.SpeciesAndCoordinates>
+#
+V = np.dot(a,np.cross(b,c))
+ga = 2.*np.pi*np.cross(b,c)/V
+gb = 2.*np.pi*np.cross(c,a)/V
+gc = 2.*np.pi*np.cross(a,b)/V
+
+theta3 = np.pi*7./6.
+theta4 = -np.pi/6.
+theta5 = np.pi/2.
+theta8 = np.pi*7./6.
+theta6 = -np.pi/6.
+theta7 = np.pi/2.
+
+Efermi = -3.0455/Hartree 
+
+lambda_d = 0.0507/Hartree 
+lambda_p = 0.6242/Hartree 
+socd = lambda_d/2.
+socp = lambda_p/2.
+
+socp00 = np.zeros((3,3),dtype=complex)
+socp00[0,1],socp00[1,0] = -1.j,1.j
+socp01 = np.zeros((3,3),dtype=complex)
+socp01[0,2],socp01[1,2],socp01[2,0],socp01[2,1] = 1.,-1.j,-1.,1.j
+socp11 = -1.*socp00.copy()
+socp10 = socp01.transpose().conjugate()
+r3 = np.sqrt(3.)
+socd00 = np.zeros((5,5),dtype=complex)
+socd00[1,2],socd00[2,1],socd00[3,4],socd00[4,3] = -2.j,2.j,-1.j,1.j
+socd01 = np.zeros((5,5),dtype=complex)
+socd01[0,3],socd01[0,4],socd01[1,3],socd01[1,4],socd01[2,3],socd01[2,4] = \
+        -r3,1.j*r3,1.,1.j,-1.j,1.
+socd01[3,0],socd01[4,0],socd01[3,1],socd01[4,1],socd01[3,2],socd01[4,2] = \
+        r3,-1.j*r3,-1.,-1.j,1.j,-1.
+socd11 = -1.*socd00.copy()
+socd10 = socd01.transpose().conjugate()
+
+
+#TB
+
+atomnum = [1,2,3,4,5,6,7,8]
+atomr = {1:Cr1, 2:Cr2, 3:I3, 4:I4, 5:I5, 6:I6, 7:I7, 8:I8}
+atomlen = [0,5,5,3,3,3,3,3,3] #first is dummy
+Nh = 0
+atomind = [0] #first is dummy
+for i in atomlen:
+    Nh += i
+    atomind.append(Nh)
+cellind = [[0,0],[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]
+#           0     1      2     3      4     5       6      7      8
+Ncell = 9
+cell = []
+for ab in cellind:
+    R = ab[0]*a + ab[1]*b
+    cell.append(R)
+cell = np.array(cell).transpose()
+#print(cell)
+def cellr(i):
+    return cell[:,i].flatten()
+
+def pos(ac):
+    ra = atomr[ac[0]]
+    rc = cellr(ac[1])
+    return ra+rc
+
+def phase_tau(k):
+    ekt = np.zeros((Nh,Nh),dtype=complex)
+    ii = 0
+    for i in atomnum:
+        t = atomr[i]
+        l = atomlen[i]
+        kt = np.exp(1.j*np.dot(k,t))
+        for j in range(l):
+            ekt[ii,ii] = kt
+            ii += 1
+    return np.kron(np.identity(2),ekt)
+
+#method cellperiodic
+taux = np.zeros((Nh,Nh),dtype=float)
+tauy = np.zeros((Nh,Nh),dtype=float)
+tauz = np.zeros((Nh,Nh),dtype=float)
+ii = 0
+for i in atomnum:
+    t = atomr[i]
+    l = atomlen[i]
+    for j in range(l):
+        taux[ii,:] -= t[0]
+        taux[:,ii] += t[0]
+        tauy[ii,:] -= t[1]
+        tauy[:,ii] += t[1]
+        tauz[ii,:] -= t[2]
+        tauz[:,ii] += t[2]
+        ii += 1
+taux = np.kron(np.ones((2,2)),taux)
+tauy = np.kron(np.ones((2,2)),tauy)
+tauz = np.kron(np.ones((2,2)),tauz)
+
+f = np.load('../HR.R.0.npz')
+HR0 = f['HR']
+f.close()
+f = np.load('../HR.R.1.npz')
+HR1 = f['HR']
+f.close()
+
+thetas = {3:theta3,4:theta4,5:theta5,6:theta6,7:theta7,8:theta8}
+
+HR = np.zeros((Ncell,2*Nh,2*Nh),dtype=complex)
+for i in range(Ncell):
+    HR[i,:Nh,:Nh] = HR0[i,:,:]
+    HR[i,Nh:,Nh:] = HR1[i,:,:]
+for i in atomnum:
+    iind = atomind[i]
+    iend = iind+atomlen[i]
+    if (i==1) or (i==2):
+        HR[0,iind:iend,iind:iend] += socd*socd00
+        HR[0,iind:iend,iind+Nh:iend+Nh] += socd*socd01
+        HR[0,iind+Nh:iend+Nh,iind:iend] += socd*socd10
+        HR[0,iind+Nh:iend+Nh,iind+Nh:iend+Nh] += socd*socd11
+    else:
+        t = thetas[i]
+        Rp = Rsocp(t)
+        RpT = Rsocp(-t)
+        HR[0,iind:iend,iind:iend] += socp*np.linalg.multi_dot([RpT,socp00,Rp])
+        HR[0,iind:iend,iind+Nh:iend+Nh] += socp*np.linalg.multi_dot([RpT,socp01,Rp])
+        HR[0,iind+Nh:iend+Nh,iind:iend] += socp*np.linalg.multi_dot([RpT,socp10,Rp])
+        HR[0,iind+Nh:iend+Nh,iind+Nh:iend+Nh] += socp*np.linalg.multi_dot([RpT,socp11,Rp])
+        
+
+def Hk(k):
+    exp_vec = np.exp(1.j*np.dot(k,cell))
+    ekt = phase_tau(k)
+    H0 = np.tensordot(exp_vec,HR,axes=((0),(0)))
+    return np.linalg.multi_dot([ekt.transpose().conjugate(),H0,ekt])
+
+
+def Band(k1, k2, n):
+    path = kpath(k1,k2,n)
+    k = 0.0
+    klist = []
+    Elists = []
+    kbefore = path[0]
+    for kvec in path:
+        k += np.linalg.norm(kvec-kbefore)
+        klist.append(k)
+        h = Hk(kvec)
+        w = np.linalg.eigvalsh(h)
+        Elists.append(w)
+        kbefore = kvec
+    E = np.transpose(np.array(Elists))
+    out = [np.array(klist)]
+    for i in range(E.shape[0]):
+        out.append(E[i,:])
+    #out[0]:k-axis value from 0, out[1:]:energy eigenvalues
+    return out
+
+####### Bands plot part ######
+#G = 0.000*ga + 0.000*gb + 0.000*gc
+#K = (2./3.)*ga + (1./3.)*gb + 0.000*gc
+#M = 0.500*ga + 0.500*gb + 0.000*gc
+#
+#band1 = Band(G,K,40)
+#band2 = Band(K,M,30)
+#band3 = Band(M,G,40)
+#PlotBand([band1,band2,band3],kticks_label=['gamma','K','M','gamma'],\
+#        shift=True, eV=True, EF=Efermi)
+##############################
+
+
+vxlist = []
+vylist = []
+vzlist = []
+elist = []
+N = 9 # k-space grid
+frac = np.linspace(0.,1.,N+1)
+for x in range(N):
+    for y in range(N):
+        k = frac[x]*ga + frac[y]*gb
+        h = Hk(k)
+        w,v = np.linalg.eigh(h)
+        tauxh = taux*h
+        tauyh = tauy*h
+        tauzh = tauz*h
+        exp_vec = np.exp(1.j*np.dot(k,cell))
+        ekt = phase_tau(k)
+        Rx_exp_vec = exp_vec*cell[0,:]
+        Ry_exp_vec = exp_vec*cell[1,:]
+        Rz_exp_vec = exp_vec*cell[2,:]
+        RxH0 = np.tensordot(Rx_exp_vec,HR,axes=((0),(0)))
+        RyH0 = np.tensordot(Ry_exp_vec,HR,axes=((0),(0)))
+        RzH0 = np.tensordot(Rz_exp_vec,HR,axes=((0),(0)))
+        RxH = np.linalg.multi_dot([ekt.transpose().conjugate(),RxH0,ekt])
+        RyH = np.linalg.multi_dot([ekt.transpose().conjugate(),RyH0,ekt])
+        RzH = np.linalg.multi_dot([ekt.transpose().conjugate(),RzH0,ekt])
+        dxH = (RxH + tauxh)*1.j
+        dyH = (RyH + tauyh)*1.j
+        dzH = (RzH + tauzh)*1.j
+        vx = np.linalg.multi_dot([v.conjugate().transpose(),dxH,v])
+        vy = np.linalg.multi_dot([v.conjugate().transpose(),dyH,v])
+        vz = np.linalg.multi_dot([v.conjugate().transpose(),dzH,v])
+        vxlist.append(vx)
+        vylist.append(vy)
+        vzlist.append(vz)
+        elist.append(w)
+
+
+Emax = 10. # eV
+Nomg = 1001
+Nocc = 42
+Nk = N*N #81
+eta = 0.1 # eV
+Area = np.linalg.norm(np.cross(a,b))
+d = 19.807*1./3./Bohr  #monolayer
+
+Emax = Emax/Hartree
+eta = eta/Hartree
+E = Emax*np.linspace(0.,1.,Nomg)
+Sxx = np.zeros(Nomg,dtype=complex)
+Sxy = np.zeros(Nomg,dtype=complex)
+Syx = np.zeros(Nomg,dtype=complex)
+
+for vx,vy,e in zip(vxlist,vylist,elist):
+    nmax = vx.shape[0]
+    sxx = np.zeros(Nomg,dtype=complex)
+    sxy = np.zeros(Nomg,dtype=complex)
+    syx = np.zeros(Nomg,dtype=complex)
+    for m in range(nmax):
+        em = e[m]
+        for n in range(nmax):
+            if ((m<Nocc)and(n>=Nocc)):
+                en = e[n]
+                vxmn = vx[m,n]
+                vxnm = vx[n,m]
+                vymn = vy[m,n]
+                vynm = vy[n,m]
+                efactorxx = 1./(em-en)/(E+em-en+1.j*eta)
+                efactor = 1./((em-en)*(em-en)-(E+1.j*eta)*(E+1.j*eta))
+                sxx += vxmn*vxnm*efactorxx
+                sxy += (vxmn*vynm).imag*efactor
+                syx += (vymn*vxnm).imag*efactor
+            if ((m>=Nocc)and(n<Nocc)):
+                en = e[n]
+                vxmn = vx[m,n]
+                vxnm = vx[n,m]
+                vymn = vy[m,n]
+                vynm = vy[n,m]
+                efactorxx = -1./(em-en)/(E+em-en+1.j*eta)
+                efactor = -1./((em-en)*(em-en)-(E+1.j*eta)*(E+1.j*eta))
+                sxx += vxmn*vxnm*efactorxx
+                sxy += (vxmn*vynm).imag*efactor
+                syx += (vymn*vxnm).imag*efactor
+    Sxx += sxx
+    Sxy += sxy
+    Syx += syx
+
+Sxx = Sxx*(-1.j)/Nk/Area/d
+Sxy = Sxy/Nk/Area/d
+Syx = Syx/Nk/Area/d
+Sxxout = Sxx.copy()
+Sxyout = Sxy.copy()
+Syxout = Syx.copy()
+Eout = E.copy()
+
+### preventing division by 0 in Kerr formula
+Sxy[0] = 0.+0.j
+Sxx[0] = 1.+0.j
+Syx[0] = 0.+0.j
+E[0] = 1.
+
+Kerr = -Sxy/(Sxx*np.sqrt(4.j*np.pi*Sxx/E+1.))
+
+np.savez('./DATA.mono.npz',E=Eout,Sxx=Sxxout,Sxy=Sxyout,Syx=Syxout,Kerr=Kerr)
+
