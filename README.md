@@ -24,7 +24,7 @@ cd ..
   
 Move to the monolayer directory `cd monolayer`.  
 Generate a MOKE data `python monolayer_MOKE.py` (this can take a few seconds).  
-The data file 'DATA.mono.npz' will be generated.  
+The data file `DATA.mono.npz` will be generated.  
 Run a figure plotting code `python plot_monolayer.py DATA.mono.npz`.  
 
   2.2 List of the codes
