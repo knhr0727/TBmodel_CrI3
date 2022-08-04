@@ -30,24 +30,24 @@ Run a figure plotting code `python plot_monolayer.py DATA.mono.npz`.
   2.2 List of the codes
   
 In `./TBmodel_CrI3/`,  
-`plot_bilayer.py`: a script to read the MOKE and conductivity tensor output files of bilayer cases (untwisted and twisted), `DATA.*.npz`.  
-`plot_STTB_untwisted.py`: a script to read the spin texture output file of the untwisted bilayer.  
-`plot_STTB_TBL.py`: a script to read the spin texture output file of the twisted bilayer.  
+`plot_bilayer.py`: reads the MOKE and conductivity tensor output files of bilayer cases (untwisted and twisted), `DATA.*.npz`, and plots the graphs of them.  
+`plot_STTB_untwisted.py`: reads the spin texture output file of the untwisted bilayer and plots the spin texture figure.  
+`plot_STTB_TBL.py`: reads the spin texture output file of the twisted bilayer and plots the spin texture figure.  
 
 In `./TBmodel_CrI3/mono_singlespin_VLR/`,  
-`TBband.0.py`  
-`TBband.1.py`  
+`TBband.0.py`: creates spin-up part of the Hamiltonian parameters of monolayer (VLR type)  
+`TBband.1.py`: creates spin-down part of the Hamiltonian parameters of monolayer (VLR type)  
 
 In `./TBmodel_CrI3/mono_singlespin_VRL/`,  
-`TBband.0.py`  
-`TBband.1.py`  
+`TBband.0.py`: creates spin-up part of the Hamiltonian parameters of monolayer (VRL type)  
+`TBband.1.py`: creates spin-down part of the Hamiltonian parameters of monolayer (VRL type)  
 
 In `./TBmodel_CrI3/monolayer/`,  
-`monolayer_MOKE.py`  
-`plot_monolayer.py`  
-`monolayer_mag.py`  
-`monolayer_pol.py`  
-`monolayer_spintexture.py`  
+`monolayer_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the FM monolayer CrI3. The output file is `DATA.mono.npz`.  
+`plot_monolayer.py`: reads the conductivity tensor and MOKE output files of the monolayer, `DATA.mono.npz`, and plots the graphs of them.  
+`monolayer_mag.py`: calculates the total magnetic moment of the FM monolayer CrI3. Outputs are printed as texts.  
+`monolayer_pol.py`: calculates the electric polarization density of the FM monolayer CrI3. Outputs are printed as texts.  
+`monolayer_spintexture.py`: calculates the spin texture of the FM monolayer CrI3. The output file is `spintexture_mono.npz`.  
 
 In `./TBmodel_CrI3/bilayer/`,  
 `bilayer_MOKE.py`  
