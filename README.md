@@ -30,7 +30,7 @@ Run a figure plotting code `python plot_monolayer.py DATA.mono.npz`.
   2.2 List of the codes
   
 In `./TBmodel_CrI3/`,  
-`plot_bilayer.py`: reads the MOKE and conductivity tensor output files of bilayer cases (untwisted and twisted), `DATA.*.npz`, and plots the graphs of them. 
+`plot_bilayer.py`: reads the MOKE and conductivity tensor output files of bilayer cases (untwisted and twisted), `DATA.*.npz`, and plots the graphs of them.  
 `plot_STTB_untwisted.py`: reads the spin texture output file of the untwisted bilayer and plots the spin texture figure.  
 `plot_STTB_TBL.py`: reads the spin texture output file of the twisted bilayer and plots the spin texture figure.  
 
@@ -60,7 +60,8 @@ The figure is plotted by commend `python ../plot_bilayer.py DATA.biAFM.npz`.
 The figure is plotted by commend `python ../plot_STTB_untwisted.py spintexture_bilayer.npz`  
 
 In `./TBmodel_CrI3/TBL_p3/`,  
-`TBL_p3_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM p3 twisted bilayer (TBL) CrI3. The output file is `DATA.p3.npz`. 
+`TBL_p3_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM p3 twisted bilayer (TBL) CrI3. 
+This can take a few dozen minutes. The output file is `DATA.p3.npz`. 
 The figure is plotted by commend `python ../plot_bilayer.py DATA.p3.npz`.  
 By modifying the integer pair (n,m) at lines 31 and 32, one can define the twist angle. The defalt is (n,m) = (2,1) corresponding to 21.79 degrees.  
 `TBL_p3_mag.py`: calculates the total magnetic moment of the AFM p3 TBL CrI3. Outputs are printed as texts.  
