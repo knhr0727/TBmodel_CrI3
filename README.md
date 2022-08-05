@@ -62,7 +62,7 @@ The figure is plotted by commend `python ../plot_STTB_untwisted.py spintexture_b
 In `./TBmodel_CrI3/TBL_p3/`,  
 `TBL_p3_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM p3 twisted bilayer (TBL) CrI3. 
 This can take a few dozen minutes. The output file is `DATA.p3.npz`. 
-The figure is plotted by commend `python ../plot_bilayer.py DATA.p3.npz`.  
+The figure is plotted by commend `python ../plot_bilayer.py DATA.p3.npz`. 
 By modifying the integer pair (n,m) at lines 31 and 32, one can define the twist angle. 
 The default is (n,m) = (2,1) corresponding to the twist angle of 21.79 degrees.  
 `TBL_p3_mag.py`: calculates the total magnetic moment of the AFM p3 TBL CrI3. Outputs are printed as texts.  
