@@ -31,7 +31,6 @@ Run a figure plotting code `python plot_monolayer.py DATA.mono.npz`.
   
 In `./TBmodel_CrI3/`,  
 `plot_bilayer.py`: reads the MOKE and conductivity tensor output files of bilayer cases (untwisted and twisted), `DATA.*.npz`, and plots the graphs of them. 
-By uncommenting lines 257-265, the bands will be shown.  
 `plot_STTB_untwisted.py`: reads the spin texture output file of the untwisted bilayer and plots the spin texture figure.  
 `plot_STTB_TBL.py`: reads the spin texture output file of the twisted bilayer and plots the spin texture figure.  
 
@@ -44,25 +43,30 @@ In `./TBmodel_CrI3/mono_singlespin_VRL/`,
 `TBband.1.py`: creates spin-down part of the Hamiltonian parameters of monolayer (VRL type)  
 
 In `./TBmodel_CrI3/monolayer/`,  
-`monolayer_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the FM monolayer CrI3. The output file is `DATA.mono.npz`.  
+`monolayer_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the FM monolayer CrI3. The output file is `DATA.mono.npz`. 
+By uncommenting lines 257-265, the bands will be shown.  
 `plot_monolayer.py`: reads the conductivity tensor and MOKE output files of the monolayer, `DATA.mono.npz`, and plots the graphs of them.  
 `monolayer_mag.py`: calculates the total magnetic moment of the FM monolayer CrI3. Outputs are printed as texts.  
 `monolayer_pol.py`: calculates the electric polarization density of the FM monolayer CrI3. Outputs are printed as texts.  
 `monolayer_spintexture.py`: calculates the spin texture of the FM monolayer CrI3. The output file is `spintexture_mono.npz`. 
-The figure is plotted by commend `python plot_STTB_untwisted.py spintexture_mono.npz`  
+The figure is plotted by commend `python ../plot_STTB_untwisted.py spintexture_mono.npz`  
 
 In `./TBmodel_CrI3/bilayer/`,  
-`bilayer_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM AB-stacked bilayer. The output file is `DATA.biAFM.npz`.  
+`bilayer_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM AB-stacked bilayer. The output file is `DATA.biAFM.npz`. 
+The figure is plotted by commend `python ../plot_bilayer.py DATA.biAFM.npz`.  
 `bilayer_mag.py`: calculates the total magnetic moment of the AFM bilayer. Outputs are printed as texts.  
 `bilayer_pol.py`: calculates the electric polarization density of the AFM bilayer. Outputs are printed as texts.  
-`bilayer_spintexture.py`: calculates the spin texture of the AFM bilayer. The output file is `spintexture_bilayer.npz`.  
+`bilayer_spintexture.py`: calculates the spin texture of the AFM bilayer. The output file is `spintexture_bilayer.npz`. 
+The figure is plotted by commend `python ../plot_STTB_untwisted.py spintexture_bilayer.npz`  
 
 In `./TBmodel_CrI3/TBL_p3/`,  
 `TBL_p3_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM p3 twisted bilayer (TBL) CrI3. The output file is `DATA.p3.npz`. 
+The figure is plotted by commend `python ../plot_bilayer.py DATA.p3.npz`.  
 By modifying the integer pair (n,m) at lines 31 and 32, one can define the twist angle. The defalt is (n,m) = (2,1) corresponding to 21.79 degrees.  
 `TBL_p3_mag.py`: calculates the total magnetic moment of the AFM p3 TBL CrI3. Outputs are printed as texts.  
 `TBL_p3_pol.py`: calculates the electric polarization density of the AFM p3 TBL CrI3. Outputs are printed as texts.  
-`TBL_p3_spintexture.py`: calculates the spin texture of the AFM p3 CrI3. The output file is `spintexture_TBL_p3.npz`.  
+`TBL_p3_spintexture.py`: calculates the spin texture of the AFM p3 CrI3. The output file is `spintexture_TBL_p3.npz`. 
+The figure is plotted by commend `python ../plot_STTB_TBL.py spintexture_TBL_p3.npz`  
 
 In `./TBmodel_CrI3/TBL_p321/`,  
 `TBL_p321_MOKE.py`: calculates the conductivity tensor and MOKE spectrum of the AFM p321 TBL CrI3. The output file is `DATA.p321.npz`.  
